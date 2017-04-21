@@ -1,0 +1,33 @@
+From 3be3fd0eb30eff4cb7f76fbd01f06c3605d7e427 Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Tue, 22 Mar 2016 13:49:33 +0200
+Subject: [PATCH 14/46] ARM: dts: imx7d: sbc-imx7: add support for baseboard
+ eeprom
+
+Add support for SB-SOM-iMX7 baseboard EEPROM over I2C4 bus.
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ arch/arm/boot/dts/imx7d-sbc-imx7.dts | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm/boot/dts/imx7d-sbc-imx7.dts b/arch/arm/boot/dts/imx7d-sbc-imx7.dts
+index a2b86995..31b6cb9 100644
+--- a/arch/arm/boot/dts/imx7d-sbc-imx7.dts
++++ b/arch/arm/boot/dts/imx7d-sbc-imx7.dts
+@@ -50,6 +50,12 @@
+ 		#gpio-cells = <2>;
+ 		reg = <0x20>;
+ 	};
++
++	eeprom_sb@54 {
++		compatible = "atmel,24c08";
++		reg = <0x54>;
++		pagesize = <16>;
++	};
+ };
+ 
+ &usdhc1 {
+-- 
+1.9.1
+

@@ -1,0 +1,84 @@
+From e2368cfc998ce71979a5053a9f38681937d0287f Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Sun, 19 Jun 2016 15:30:17 +0300
+Subject: [PATCH 40/46] ARM: dts: imx7d: cl-som-imx7: update defconfig
+
+Update defconfig to enable audio, Bluetooth and CAN bus support.
+
+Enable:
+        IKCONFIG
+        IKCONFIG_PROC
+        CAN
+        BT
+        BT_RFCOMM
+        BT_RFCOMM_TTY
+        BT_BNEP
+        BT_BNEP_MC_FILTER
+        BT_BNEP_PROTO_FILTER
+        BT_HCIBTSDIO
+        TI_ST
+        SND_SOC_IMX_WM8731
+As module:
+        CAN_RAW
+        CAN_BCM
+        CAN_GW
+        CAN_FLEXCAN
+        BT_WILINK
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ arch/arm/configs/cl_som_imx7_defconfig | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/arch/arm/configs/cl_som_imx7_defconfig b/arch/arm/configs/cl_som_imx7_defconfig
+index 42d2c05..2eeebc8 100644
+--- a/arch/arm/configs/cl_som_imx7_defconfig
++++ b/arch/arm/configs/cl_som_imx7_defconfig
+@@ -4,6 +4,8 @@ CONFIG_SYSVIPC=y
+ CONFIG_FHANDLE=y
+ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
+ CONFIG_LOG_BUF_SHIFT=18
+ CONFIG_SCHED_AUTOGROUP=y
+ CONFIG_RELAY=y
+@@ -66,6 +68,19 @@ CONFIG_IP_PNP_DHCP=y
+ # CONFIG_INET_LRO is not set
+ CONFIG_IPV6=y
+ CONFIG_NETFILTER=y
++CONFIG_CAN=y
++CONFIG_CAN_RAW=m
++CONFIG_CAN_BCM=m
++CONFIG_CAN_GW=m
++CONFIG_CAN_FLEXCAN=m
++CONFIG_BT=y
++CONFIG_BT_RFCOMM=y
++CONFIG_BT_RFCOMM_TTY=y
++CONFIG_BT_BNEP=y
++CONFIG_BT_BNEP_MC_FILTER=y
++CONFIG_BT_BNEP_PROTO_FILTER=y
++CONFIG_BT_HCIBTSDIO=y
++CONFIG_BT_WILINK=m
+ CONFIG_CFG80211=y
+ CONFIG_CFG80211_WEXT=y
+ CONFIG_MAC80211=y
+@@ -101,6 +116,7 @@ CONFIG_BLK_DEV_RAM=y
+ CONFIG_BLK_DEV_RAM_SIZE=65536
+ CONFIG_EEPROM_AT24=y
+ CONFIG_EEPROM_AT25=y
++CONFIG_TI_ST=y
+ # CONFIG_SCSI_PROC_FS is not set
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_SCSI_CONSTANTS=y
+@@ -215,6 +231,7 @@ CONFIG_SND=y
+ CONFIG_SND_SOC=y
+ CONFIG_SND_IMX_SOC=y
+ CONFIG_SND_SOC_EUKREA_TLV320=y
++CONFIG_SND_SOC_IMX_WM8731=y
+ CONFIG_SND_SOC_IMX_WM8962=y
+ CONFIG_SND_SOC_IMX_SGTL5000=y
+ CONFIG_SND_SOC_IMX_SPDIF=y
+-- 
+1.9.1
+

@@ -1,0 +1,32 @@
+From e116ea68efc0500e64a05c32c717c6b422f98118 Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Wed, 10 Feb 2016 15:24:36 +0200
+Subject: [PATCH 10/46] ARM: dts: imx7d: cl-som-imx7: add support for RTC
+
+Add support for EM3027 RTC over I2C2 bus.
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ arch/arm/boot/dts/imx7d-cl-som-imx7.dts | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm/boot/dts/imx7d-cl-som-imx7.dts b/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
+index 85a8156..cddaf0d 100644
+--- a/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
++++ b/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
+@@ -413,6 +413,12 @@
+ 		reg = <0x50>;
+ 		pagesize = <16>;
+ 	};
++
++	rtc@56 {
++		compatible = "emmicro,em3027";
++		reg = <0x56>;
++	};
++
+ };
+ 
+ &uart1 {
+-- 
+1.9.1
+

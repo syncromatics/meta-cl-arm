@@ -1,0 +1,63 @@
+From 413b3a2e88dcff53b605fa072f3ebd03b06174a7 Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Sun, 29 May 2016 16:48:09 +0300
+Subject: [PATCH 30/46] ti-st: st_kim: use gpio_set_value_cansleep() where
+ possible
+
+Use gpio_set_value_cansleep() where possible because GPIO accessor
+functions may sleep.
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ drivers/misc/ti-st/st_kim.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/misc/ti-st/st_kim.c b/drivers/misc/ti-st/st_kim.c
+index 18e7a03..5faf518 100644
+--- a/drivers/misc/ti-st/st_kim.c
++++ b/drivers/misc/ti-st/st_kim.c
+@@ -482,9 +482,15 @@ long st_kim_start(void *kim_data)
+ 			pdata->chip_enable(kim_gdata);
+ 
+ 		/* Configure BT nShutdown to HIGH state */
+-		gpio_set_value(kim_gdata->nshutdown, GPIO_LOW);
++		if (gpio_cansleep(kim_gdata->nshutdown))
++			gpio_set_value_cansleep(kim_gdata->nshutdown, GPIO_LOW);
++		else
++			gpio_set_value(kim_gdata->nshutdown, GPIO_LOW);
+ 		mdelay(5);	/* FIXME: a proper toggle */
+-		gpio_set_value(kim_gdata->nshutdown, GPIO_HIGH);
++		if (gpio_cansleep(kim_gdata->nshutdown))
++			gpio_set_value_cansleep(kim_gdata->nshutdown, GPIO_HIGH);
++		else
++			gpio_set_value(kim_gdata->nshutdown, GPIO_HIGH);
+ 		mdelay(100);
+ 		/* re-initialize the completion */
+ 		reinit_completion(&kim_gdata->ldisc_installed);
+@@ -566,11 +572,20 @@ long st_kim_stop(void *kim_data)
+ 	}
+ 
+ 	/* By default configure BT nShutdown to LOW state */
+-	gpio_set_value(kim_gdata->nshutdown, GPIO_LOW);
++	if (gpio_cansleep(kim_gdata->nshutdown))
++		gpio_set_value_cansleep(kim_gdata->nshutdown, GPIO_LOW);
++	else
++		gpio_set_value(kim_gdata->nshutdown, GPIO_LOW);
+ 	mdelay(1);
+-	gpio_set_value(kim_gdata->nshutdown, GPIO_HIGH);
++	if (gpio_cansleep(kim_gdata->nshutdown))
++		gpio_set_value_cansleep(kim_gdata->nshutdown, GPIO_HIGH);
++	else
++		gpio_set_value(kim_gdata->nshutdown, GPIO_HIGH);
+ 	mdelay(1);
+-	gpio_set_value(kim_gdata->nshutdown, GPIO_LOW);
++	if (gpio_cansleep(kim_gdata->nshutdown))
++		gpio_set_value_cansleep(kim_gdata->nshutdown, GPIO_LOW);
++	else
++		gpio_set_value(kim_gdata->nshutdown, GPIO_LOW);
+ 
+ 	/* platform specific disable */
+ 	if (pdata->chip_disable)
+-- 
+1.9.1
+

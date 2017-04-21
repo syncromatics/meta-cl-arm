@@ -1,0 +1,72 @@
+From e83d3d3aeecdb1be6ac25486e3906536a4314df5 Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Sun, 29 May 2016 17:14:53 +0300
+Subject: [PATCH 33/46] ARM: dts: imx7d: cl-som-imx7: add WiLink Bluetooth
+ support
+
+Add support for TI's WiLink8 Bluetooth module on UART3.
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ arch/arm/boot/dts/imx7d-cl-som-imx7.dts | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+
+diff --git a/arch/arm/boot/dts/imx7d-cl-som-imx7.dts b/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
+index 08cffca..4fd2378 100644
+--- a/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
++++ b/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
+@@ -82,6 +82,19 @@
+ 		};
+ 	};
+ 
++	kim {
++		compatible = "kim";
++		depends = "/regulators/regulator@2";
++		nshutdown_gpio = <&pca9555 1 GPIO_ACTIVE_HIGH>;
++		dev_name = "/dev/ttymxc2";
++		flow_cntrl = <1>;
++		baud_rate = <3000000>;
++	};
++
++	btwilink {
++		compatible = "btwilink";
++	};
++
+ 	leds {
+ 		compatible = "gpio-leds";
+ 
+@@ -321,6 +334,15 @@
+ 			>;
+ 		};
+ 
++		pinctrl_uart3: uart3grp {
++			fsl,pins = <
++				MX7D_PAD_UART3_TX_DATA__UART3_DCE_TX		0x79
++				MX7D_PAD_UART3_RX_DATA__UART3_DCE_RX		0x79
++				MX7D_PAD_UART3_CTS_B__UART3_DCE_CTS		0x79
++				MX7D_PAD_UART3_RTS_B__UART3_DCE_RTS		0x79
++			>;
++		};
++
+ 		pinctrl_usdhc2: usdhc2grp {
+ 			fsl,pins = <
+ 				MX7D_PAD_SD2_CMD__SD2_CMD			0x59
+@@ -501,6 +523,15 @@
+ 	status = "okay";
+ };
+ 
++&uart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart3>;
++	assigned-clocks = <&clks IMX7D_UART3_ROOT_SRC>;
++	assigned-clock-parents = <&clks IMX7D_PLL_SYS_MAIN_240M_CLK>;
++	status = "okay";
++	fsl,uart-has-rtscts;
++};
++
+ &usbotg1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_usbotg1>;
+-- 
+1.9.1
+

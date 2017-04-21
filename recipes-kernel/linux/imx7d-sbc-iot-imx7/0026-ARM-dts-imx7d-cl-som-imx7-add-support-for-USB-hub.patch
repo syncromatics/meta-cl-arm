@@ -1,0 +1,48 @@
+From 43c1933c582ee0b9fa4e1df5751b4d968c0fc5c4 Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Tue, 24 May 2016 16:53:34 +0300
+Subject: [PATCH 26/46] ARM: dts: imx7d: cl-som-imx7: add support for USB hub
+
+Add support for onboard USB hub over USB HSIC controller.
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ arch/arm/boot/dts/imx7d-cl-som-imx7.dts | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/arch/arm/boot/dts/imx7d-cl-som-imx7.dts b/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
+index 202d52d..08cffca 100644
+--- a/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
++++ b/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
+@@ -70,6 +70,16 @@
+ 			startup-delay-us = <70000>;
+ 			enable-active-high;
+ 		};
++
++		reg_usbh_nreset: regulator@4 {
++			compatible = "regulator-fixed";
++			regulator-name = "usb_host_nreset";
++			regulator-min-microvolt = <3300000>;
++			regulator-max-microvolt = <3300000>;
++			gpio = <&pca9555 6 GPIO_ACTIVE_HIGH>;
++			enable-active-high;
++			regulator-always-on;
++		};
+ 	};
+ 
+ 	leds {
+@@ -507,6 +517,11 @@
+ 	status = "okay";
+ };
+ 
++&usbh {
++	vbus-supply = <&reg_usbh_nreset>;
++	status = "okay";
++};
++
+ &usdhc2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_usdhc2>;
+-- 
+1.9.1
+

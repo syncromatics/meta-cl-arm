@@ -1,0 +1,28 @@
+From bd3fce31250f6eff75afcf08ed124fde18e265ea Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Sun, 29 May 2016 17:09:55 +0300
+Subject: [PATCH 32/46] ti-st: st_kim: fix build time warnings
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ drivers/misc/ti-st/st_kim.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/misc/ti-st/st_kim.c b/drivers/misc/ti-st/st_kim.c
+index c4c3f988..1802b1b 100644
+--- a/drivers/misc/ti-st/st_kim.c
++++ b/drivers/misc/ti-st/st_kim.c
+@@ -637,8 +637,8 @@ static ssize_t store_baud_rate(struct device *dev,
+ {
+ 	struct kim_data_s *kim_data = dev_get_drvdata(dev);
+ 	pr_debug("storing baud rate >%s<", buf);
+-	sscanf(buf, "%ld", &kim_data->baud_rate);
+-	pr_debug("stored baud rate >%ld<", kim_data->baud_rate);
++	sscanf(buf, "%ud", &kim_data->baud_rate);
++	pr_debug("stored baud rate >%ud<", kim_data->baud_rate);
+ 	return count;
+ }
+ #endif	/* if DEBUG */
+-- 
+1.9.1
+

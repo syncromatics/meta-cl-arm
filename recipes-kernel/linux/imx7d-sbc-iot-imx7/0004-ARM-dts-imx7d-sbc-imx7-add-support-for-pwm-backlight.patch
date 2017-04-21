@@ -1,0 +1,55 @@
+From 918727d123f0184487523f3a3ac84712e35dc62d Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Fri, 5 Feb 2016 10:44:30 +0200
+Subject: [PATCH 04/46] ARM: dts: imx7d: sbc-imx7: add support for pwm
+ backlight
+
+Add support for PWM2 based backlight used for LCD display.
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ arch/arm/boot/dts/imx7d-sbc-imx7.dts | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/arch/arm/boot/dts/imx7d-sbc-imx7.dts b/arch/arm/boot/dts/imx7d-sbc-imx7.dts
+index 0679e4b..dedd3b6 100644
+--- a/arch/arm/boot/dts/imx7d-sbc-imx7.dts
++++ b/arch/arm/boot/dts/imx7d-sbc-imx7.dts
+@@ -14,6 +14,14 @@
+ / {
+ 	model = "CompuLab SBC-iMX7";
+ 	compatible = "compulab,sbc-imx7", "compulab,cl-som-imx7", "fsl,imx7d";
++
++	backlight {
++		compatible = "pwm-backlight";
++		pwms = <&pwm2 0 5000000>;
++		brightness-levels = <0 4 8 16 32 64 128 255>;
++		default-brightness-level = <6>;
++		status = "okay";
++	};
+ };
+ 
+ &usdhc1 {
+@@ -41,3 +49,19 @@
+ 		};
+ 	};
+ };
++
++&iomuxc_lpsr {
++	sbc-imx7 {
++		pinctrl_pwm2: pwm2grp {
++			fsl,pins = <
++				MX7D_PAD_GPIO1_IO02__PWM2_OUT		0x110b0
++			>;
++		};
++	};
++};
++
++&pwm2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm2>;
++	status = "okay";
++};
+-- 
+1.9.1
+

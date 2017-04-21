@@ -1,0 +1,27 @@
+From d707265400a74e9c6415f5cc1cd35bb0e60bfa3b Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Tue, 16 Aug 2016 11:05:00 +0300
+Subject: [PATCH 43/46] ARM: dts: imx7d: cl-som-imx7: release kernel
+ v4.1.15-cl-som-imx7-2.1
+
+Set the release version in the local version:
+        LOCALVERSION="-cl-som-imx7-2.1"
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ arch/arm/configs/cl_som_imx7_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/configs/cl_som_imx7_defconfig b/arch/arm/configs/cl_som_imx7_defconfig
+index be79c5b..56e5809 100644
+--- a/arch/arm/configs/cl_som_imx7_defconfig
++++ b/arch/arm/configs/cl_som_imx7_defconfig
+@@ -1,4 +1,4 @@
+-CONFIG_LOCALVERSION="-cl-som-imx7-2.0"
++CONFIG_LOCALVERSION="-cl-som-imx7-2.1"
+ # CONFIG_LOCALVERSION_AUTO is not set
+ CONFIG_KERNEL_LZO=y
+ CONFIG_SYSVIPC=y
+-- 
+1.9.1
+

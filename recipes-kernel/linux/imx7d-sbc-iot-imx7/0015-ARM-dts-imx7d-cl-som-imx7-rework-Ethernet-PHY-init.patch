@@ -1,0 +1,70 @@
+From e3582ab00446cf3e11deb2c4ab9ae9db30bb03db Mon Sep 17 00:00:00 2001
+From: Ilya Ledvich <ilya@compulab.co.il>
+Date: Tue, 5 Apr 2016 09:38:28 +0300
+Subject: [PATCH 15/46] ARM: dts: imx7d: cl-som-imx7: rework Ethernet PHY init
+
+Rework FEC1 and FEC2 PHY init. This patch takes into consideration
+following facts:
+ - FEC2 PHY is connected to the FEC1 MDIO bus, so it has to be taken
+   ot of reset during FEC1 init
+ - one of PCA955 GPIO extender pins is user as FEC2 PHY reset GPIO,
+   so FEC2 PHY must be probed after PCA9555 has already been probed
+Following changes are introduced:
+ - add to FEC1 'depends' property on PCA9555 GPIO extender
+ - add to FEC1 'pinctrl-assert-gpios' property that lists
+   FEC1 and FEC2 PHY reset GPIOs (SoC GPIO1_4 and PCA9555 GPIO4
+   respectively).
+ - remove reg_phy1_nreset and reg_phy2_nreset regulators
+   because they are no longer used
+ - change the rest of regulators numeration respectively
+
+Signed-off-by: Ilya Ledvich <ilya@compulab.co.il>
+---
+ arch/arm/boot/dts/imx7d-cl-som-imx7.dts | 24 +++---------------------
+ 1 file changed, 3 insertions(+), 21 deletions(-)
+
+diff --git a/arch/arm/boot/dts/imx7d-cl-som-imx7.dts b/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
+index 97ba463..4495fcc 100644
+--- a/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
++++ b/arch/arm/boot/dts/imx7d-cl-som-imx7.dts
+@@ -41,27 +41,7 @@
+ 			enable-active-high;
+ 		};
+ 
+-		reg_phy1_nreset: regulator@1 {
+-			compatible = "regulator-fixed";
+-			regulator-name = "fec1_phy_nreset";
+-			regulator-min-microvolt = <3300000>;
+-			regulator-max-microvolt = <3300000>;
+-			gpio = <&gpio1 4 GPIO_ACTIVE_HIGH>;
+-			enable-active-high;
+-			regulator-always-on;
+-		};
+-
+-		reg_phy2_nreset: regulator@2 {
+-			compatible = "regulator-fixed";
+-			regulator-name = "fec2_phy_nreset";
+-			regulator-min-microvolt = <3300000>;
+-			regulator-max-microvolt = <3300000>;
+-			gpio = <&pca9555 4 GPIO_ACTIVE_HIGH>;
+-			enable-active-high;
+-			regulator-always-on;
+-		};
+-
+-		tsc2046reg: regulator@3 {
++		tsc2046reg: regulator@1 {
+ 			compatible = "regulator-fixed";
+ 			regulator-name = "tsc2046-reg";
+ 			regulator-min-microvolt = <3300000>;
+@@ -149,6 +129,8 @@
+ &fec1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_enet1>;
++	depends = "/soc/aips-bus@30800000/i2c@30a30000/pca9555@20";
++	pinctrl-assert-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH> , <&pca9555 4 GPIO_ACTIVE_HIGH>;
+ 	assigned-clocks = <&clks IMX7D_ENET1_TIME_ROOT_SRC>,
+ 			  <&clks IMX7D_ENET1_TIME_ROOT_CLK>;
+ 	assigned-clock-parents = <&clks IMX7D_PLL_ENET_MAIN_100M_CLK>;
+-- 
+1.9.1
+

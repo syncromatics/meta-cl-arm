@@ -1,0 +1,30 @@
+From 831e905cfb5064ff3ebc84101e50da5c9eeab2fd Mon Sep 17 00:00:00 2001
+From: Peter Chen <peter.chen@freescale.com>
+Date: Fri, 10 Jul 2015 15:32:44 +0800
+Subject: [PATCH 25/46] MLK-11235-2 ARM: imx7d.dtsi: add USB HSIC support
+
+There are two power supplied for USB HSIC, one is VDD_1P2_CAP, another
+is VDD_HSIC_1P0. The VDD_1P2_CAP is analog reg which can be controlled
+by PMU, but we set the override bit and let the gpc control it, without
+this setting, the USB module can't get the clock properly.
+
+Signed-off-by: Peter Chen <peter.chen@freescale.com>
+---
+ arch/arm/boot/dts/imx7d.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/boot/dts/imx7d.dtsi b/arch/arm/boot/dts/imx7d.dtsi
+index 5727cc0..a8fd2ab 100644
+--- a/arch/arm/boot/dts/imx7d.dtsi
++++ b/arch/arm/boot/dts/imx7d.dtsi
+@@ -709,6 +709,7 @@
+ 				fsl,mf-mix-wakeup-irq = <0x54010000 0xc00 0x0 0x1040640>;
+ 				mipi-phy-supply = <&reg_1p0d>;
+ 				pcie-phy-supply = <&reg_1p0d>;
++				vcc-supply = <&reg_1p2>;
+ 			};
+ 		};
+ 
+-- 
+1.9.1
+
