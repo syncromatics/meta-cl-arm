@@ -13,7 +13,7 @@ SRCBRANCH = "imx_4.1.15_1.0.0_ga"
 LOCALVERSION = "-2.0.1"
 SRCREV = "42e130b08bdaf03be090a47922f566adce1b2ccf"
 
-SRC_URI = "git.freescale.com/git/cgit.cgi/imx/linux-2.6-imx.git;protocol=http;branch=${SRCBRANCH} \
+SRC_URI = "git://git.freescale.com/git/cgit.cgi/imx/linux-2.6-imx.git;protocol=http;branch=${SRCBRANCH} \
 	file://defconfig "
 
 S = "${WORKDIR}/git"
